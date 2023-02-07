@@ -1,0 +1,19 @@
+name: Clean up webhooks
+on:
+  workflow_dispatch
+
+jobs:
+  cleanWebhooks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: octokit/request-action@v2.x
+        id: get_webhooks
+        with:
+          route: GET /repos/{owner}/{repo}/hooks
+          owner: hashicorp
+          repo: terraform-random-1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: "echo hooks found: '${{ steps.get_webhooks.outputs.data }}'"
+      - run: "echo failed to fetch hooks. Request failed with status '${{ steps.get_webhooks.outputs.status }}'"
+        if: ${{ failure() }}
