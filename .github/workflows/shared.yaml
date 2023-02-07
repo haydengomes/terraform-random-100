@@ -9,9 +9,7 @@ jobs:
       - uses: octokit/request-action@v2.x
         id: get_webhooks
         with:
-          route: GET /repos/{owner}/{repo}/hooks
-          owner: hashicorp
-          repo: terraform-random-1
+          route: GET /repos/hashicorp/terraform-random-1/hooks
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: "echo hooks found: '${{ steps.get_webhooks.outputs.data }}'"
