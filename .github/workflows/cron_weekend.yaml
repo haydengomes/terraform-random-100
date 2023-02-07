@@ -27,7 +27,7 @@ jobs:
     needs: [ fetchWebhooks ]
     strategy:
       matrix:
-        value: ${{fromJSON(needs.fetchWebhooks.outputs.hook_ids || "[]")}}
+        value: ${{fromJSON(needs.fetchWebhooks.outputs.hook_ids || [])}}
     steps:
       - uses: octokit/request-action@v2.x
         id: delete_webhook
