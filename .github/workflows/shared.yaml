@@ -16,9 +16,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       - run: "jq -n '${{ steps.get_webhooks.outputs.data }}' | jq -rc '[.[] .id]' > ids.json"
-      - run: "cat ids.json"
-      - run: "echo \"hook_ids=$(cat ids.json)\" >> $GITHUB_OUTPUT"
-      - run: "echo '${{steps.get_webhooks.outputs.hook_ids}}'"
+      - run: |
+          echo "hook_ids=$(cat ids.json)\n" >> $GITHUB_OUTPUT"
   debugOutputs:
     runs-on: ubuntu-latest
     needs: [ fetchWebhooks ]
