@@ -23,12 +23,11 @@ jobs:
       - run: |
           echo 'Deleting these webhook ids: ${{ steps.format.outputs.hook_ids }}'
   cleanWebhooks:
-    if: ${{ needs.fetchWebhooks.outputs.hook_ids }}
     runs-on: ubuntu-latest
     needs: [ fetchWebhooks ]
     strategy:
       matrix:
-        value: ${{fromJSON(needs.fetchWebhooks.outputs.hook_ids)}}
+        value: ${{fromJSON(needs.fetchWebhooks.outputs.hook_ids || "[]")}}
     steps:
       - uses: octokit/request-action@v2.x
         id: delete_webhook
