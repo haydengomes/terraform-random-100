@@ -10,11 +10,12 @@ jobs:
 
     steps:
       - uses: octokit/request-action@v2.x
+        id: fetch_webhooks
         with:
           route: GET /repos/hashicorp/terraform-random-1/hooks
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      - run: "jq -n '${{ steps.get_webhooks.outputs.data }}' | jq -rc '[.[] .id]' > ids.json"
+      - run: "jq -n '${{ steps.fetch_webhooks.outputs.data }}' | jq -rc '[.[] .id]' > ids.json"
       - id: get_webhooks
         run: |
           echo "hook_ids=$(cat ids.json)\n" >> $GITHUB_OUTPUT
