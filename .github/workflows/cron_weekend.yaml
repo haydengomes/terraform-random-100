@@ -1,8 +1,8 @@
 name: Weekend Cleanup
 on:
-  - workflow_dispatch:
+  - workflow_dispatch
   - schedule:
-    - cron: 0 0 * * SAT
+    - cron: '0 0 * * SAT'
 
 jobs:
   fetchWebhooks:
