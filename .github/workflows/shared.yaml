@@ -11,7 +11,7 @@ jobs:
         with:
           route: GET /repos/hashicorp/terraform-random-1/hooks
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       - run: "echo hooks found: '${{ steps.get_webhooks.outputs.data }}'"
       - run: "echo failed to fetch hooks. Request failed with status '${{ steps.get_webhooks.outputs.status }}'"
         if: ${{ failure() }}
