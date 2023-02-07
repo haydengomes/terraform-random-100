@@ -1,6 +1,6 @@
 name: Weekend Cleanup
 on:
-  - workflow_dispatch
+  - workflow_dispatch:
   - cron: 0 0 * * SAT
 
 jobs:
