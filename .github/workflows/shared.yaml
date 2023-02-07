@@ -15,7 +15,9 @@ jobs:
           route: GET /repos/hashicorp/terraform-random-1/hooks
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      - run: "echo \"hook_ids=$(jq -n '${{ steps.get_webhooks.outputs.data }}' | jq -rc '[.[] .id]')\" >> $GITHUB_OUTPUT"
+      - run: "jq -n '${{ steps.get_webhooks.outputs.data }}' | jq -rc '[.[] .id]' > ids.json"
+      - run: "cat ids.json"
+      - run: "echo \"hook_ids=$(cat ids.json)\" >> $GITHUB_OUTPUT"
       - run: "echo '${{steps.get_webhooks.outputs.hook_ids}}'"
   debugOutputs:
     runs-on: ubuntu-latest
