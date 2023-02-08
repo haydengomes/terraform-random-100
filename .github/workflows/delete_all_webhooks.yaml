@@ -1,6 +1,10 @@
-name: Weekend Cleanup
+name: Delete All Webhooks
 on:
   workflow_dispatch:
+  workflow_call:
+    secrets:
+      GH_TOKEN:
+        required: true
   schedule:
     - cron: '0 0 * * SAT'
 
@@ -14,7 +18,7 @@ jobs:
       - uses: octokit/request-action@v2.x
         id: request
         with:
-          route: GET /repos/hashicorp/terraform-random-1/hooks
+          route: GET /repos/${{ github.repository }}/hooks
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       - id: format
@@ -22,6 +26,7 @@ jobs:
           echo "hook_ids=$(jq -n '${{ steps.request.outputs.data }}' | jq -rc '[.[] .id]')\n" >> $GITHUB_OUTPUT
       - run: |
           echo 'Deleting these webhook ids: ${{ steps.format.outputs.hook_ids }}'
+
   cleanWebhooks:
     runs-on: ubuntu-latest
     needs: [ fetchWebhooks ]
@@ -33,6 +38,6 @@ jobs:
       - uses: octokit/request-action@v2.x
         id: delete_webhook
         with:
-          route: DELETE /repos/hashicorp/terraform-random-1/hooks/${{ matrix.value }}
+          route: DELETE /repos/${{ github.repository }}/hooks/${{ matrix.value }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
