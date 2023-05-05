@@ -12,3 +12,12 @@ resource "random_id" "random" {
 output "random" {
   value = random_id.random.hex
 }
+
+resource "random_string" "example" {
+  count  = 1000
+  length = 8
+}
+
+output "random_strings" {
+  value = random_string.example.*.result
+}
