@@ -14,7 +14,7 @@ output "random" {
 }
 
 resource "random_string" "example" {
-  count  = 1000
+  count  = 100
   length = 8
 }
 
